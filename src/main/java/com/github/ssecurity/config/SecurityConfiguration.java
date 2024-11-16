@@ -29,9 +29,15 @@ public class SecurityConfiguration {
 		http
 		.csrf(csrf -> csrf.disable())
 		.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers("/auth/**").permitAll()
+				.requestMatchers("/auth/**","/login","/css/**", "/js/**", "/images/**","/check").permitAll()
 				.anyRequest().authenticated()
 				)
+		.formLogin(form -> form
+				.loginPage("/login")
+				.defaultSuccessUrl("/")
+				.successForwardUrl("/")
+				)
+		
 		.sessionManagement(session -> session
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		)

@@ -2,11 +2,13 @@ package com.github.ssecurity.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.github.ssecurity.dto.LoginUserDto;
 import com.github.ssecurity.dto.RegisterUserDto;
@@ -24,7 +26,8 @@ public class AuthenticationController {
 	private AuthenticationService authService;
 	@Autowired
 	private JwtService jwtService;
-	
+	@Autowired
+	private ViewController views;
 	@PostMapping("/signup")
 	public ResponseEntity<AppUser> register(@RequestBody RegisterUserDto registerUserDto){
 		System.out.println("Calling register");
@@ -33,12 +36,12 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto) {
+	public ModelAndView authenticate(@ModelAttribute LoginUserDto loginUserDto) {
 		AppUser user = authService.authenticate(loginUserDto);
 		String jwtToken = jwtService.generateToken(user);
 		LoginResponse response = new LoginResponse(jwtToken, jwtService.getExpirationTime());
-		return ResponseEntity.ok(response);
-	}
+		return new ModelAndView("index");
+	} 
 	
 	@PostMapping("/verify")
 	public ResponseEntity<?> verifyUser(@RequestBody VerifyUserDto verifyUserDto){

@@ -26,6 +26,7 @@ public class JwtService {
 	private Long jwtExpTime;
 	
 	public String extractUserName(String token) {
+		System.out.println("Extract UserName ");
 		return extractClaim(token,Claims::getSubject);
 	}
 	
@@ -34,7 +35,8 @@ public class JwtService {
 		return claimsResolver.apply(claims);
 	}
 	public Claims extractAllClaims(String token) {
-		return Jwts.parser().verifyWith(getSignInKey()).build().parseUnsecuredClaims(token).getPayload();
+		return Jwts.parser().verifyWith(getSignInKey()).build().parseSignedClaims(token).getPayload();
+		
 	}
 	private SecretKey getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);

@@ -34,6 +34,11 @@ public class AppUser implements UserDetails{
 	private LocalDateTime verificationExpiry;
 	@Column(nullable=true)
 	private boolean enabled;
+	
+	
+	public AppUser() {
+		super();
+	}
 	public AppUser(String name,String password) {
 		this.name = name;
 		this.email=name;

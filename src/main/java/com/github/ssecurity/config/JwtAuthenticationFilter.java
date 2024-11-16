@@ -34,15 +34,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 			throws ServletException, IOException {
 		
 		final String authHeader = request.getHeader("Authorization");
-		
-		if(authHeader == null || authHeader.startsWith("Bearer ")) {
+		System.out.println(request.getRequestURI());
+		if( request.getRequestURI().equals("/login") || authHeader == null) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 		try {
 			final String jwt = authHeader.substring(7);
+			System.out.println("Token "+jwt);
 			final String userEmail = jwtService.extractUserName(jwt);
-			
+			System.out.println("\nemail: "+userEmail);
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			
 			if(userEmail != null && authentication == null) {

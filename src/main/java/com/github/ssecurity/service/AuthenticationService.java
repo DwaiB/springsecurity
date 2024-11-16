@@ -90,7 +90,9 @@ public class AuthenticationService {
 			throw new RuntimeException("User Not found");
 		}
 		AppUser user = opuser.get();
-		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+		System.out.println("GOt user: "+user.getUsername());
+		authenticationManager.authenticate(UsernamePasswordAuthenticationToken.unauthenticated(input.getEmail(), input.getPassword()));
+		System.out.println("Auth Done");
 		return user;
 	}
 	public void verifyUser(VerifyUserDto input) {
